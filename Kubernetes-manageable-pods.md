@@ -6,24 +6,24 @@ version: 0.1
 status: "Draft"
 ---
 **Content:**
-- [1. ReplicaSet](#1-replicaset)
+- [1. replicaSet](#1-replicaset)
 - [2. DeamonSet](#2-deamonset)
 - [3. Deployment](#3-deployment)
   - [3.1. Deployment strategies](#31-deployment-strategies)
-    - [3.1.1. Check ReplicaSet](#311-check-replicaset)
+    - [3.1.1. Check replicaSet](#311-check-replicaset)
 - [4. Cleanup](#4-cleanup)
 
 
 
-# 1. ReplicaSet
-1. Create replicaset (rs) descriptor
+# 1. replicaSet
+1. Create replicaSet (rs) descriptor
     ```bash
     vim rs-test.yaml
     ```
     Paste the content and save
     ```yaml
     apiVersion: apps/v1
-    kind: ReplicaSet
+    kind: replicaSet
     metadata:
       name: frontend
       namespace: test
@@ -49,11 +49,11 @@ status: "Draft"
    ```bash
    kubectl apply -f rs-test.yaml
    ```
-3. List replicaset
+3. List replicaSet
    ```bash
    kubectl get rs -n test
    ```
-4. Describe created replicaset
+4. Describe created replicaSet
    ```bash
    kubectl -n test describe rs frontend
    ```
@@ -74,7 +74,7 @@ status: "Draft"
     ```
    </details></p>
 
-6. Check labels of pods
+6. Check the labels of pods
    ```bash
    kubectl -n test get po --show-labels
    ```
@@ -87,7 +87,7 @@ status: "Draft"
    kubectl get pods -n test
    ```
    There should be 5 pods of frontend
-9. Check replicaset
+9. Check replicaSet
    ```bash
    kubectl -n test get rs
    ```
@@ -95,7 +95,7 @@ status: "Draft"
     ```bash
     kubectl apply -f rs-test.yaml
     ```
-11. Check `rs` status and pods. In describe output check the status at the bottom. It should display history of creation and deletion of pods. 
+11. Check `rs` status and pods. In describing output check the status at the bottom. It should display the history of the creation and deletion of pods. 
     ```bash
     kubectl -n test get po --show-labels
     kubectl -n test get rs
@@ -107,13 +107,13 @@ status: "Draft"
     kubectl -n test get po -o wide -w
     kubectl -n test describe rs frontend
     ```
-    **NOTE**:To stop watching press `Ctrl+c`
+    **NOTE**: To stop watching press `Ctrl+c`
 13. Add new pod with label `tier=frontend`
     ```bash
     kubectl -n test run frontend --image nginx --labels tier=frontend
     kubectl -n test get po --show-labels -w
     ```
-14. Describe replicaset and check the events at the bottom 
+14. Describe replicaSet and check the events at the bottom 
     ```bash
     kubectl -n test describe rs frontend
     ```
@@ -135,18 +135,18 @@ status: "Draft"
     ```bash
     kubectl -n test get po
     ```
-17. Describe a replicaset pod and check the image
+17. Describe a replicaSet pod and check the image
     ```bash
     kubectl -n test describe po frontend-<id>
     ```
-18. Delete all pods and recheck the image in description
+18. Delete all pods and recheck the image in the description
     ```bash
     kubectl -n test scale rs frontend --replicas 0 
     kubectl -n test get rs                # wait till the number of pods will get to 0
     kubectl -n test scale rs frontend --replicas 4
     kubectl -n test describe po frontend-<newId>
     ```    
-19. Delete replicaset without deleting pods
+19. Delete replicaSet without deleting pods
     ```bash
     kubectl -n test delete rs frontend --cascade=orphan
     kubectl -n test get po
@@ -156,18 +156,18 @@ status: "Draft"
     ```bash
     kubectl -n test apply -f rs-test.yaml
     ```
-22. Delete replicaset with pods
+22. Delete replicaSet with pods
     ```bash
     kubectl -n test delete rs frontend
     kubectl -n test get po 
     kubectl -n test get rs
     ```
 # 2. DeamonSet
-1. Create daemonset (ds) descriptor  
+1. Create daemonSet (ds) descriptor  
     ```bash
     vim ds-test.yaml
     ```
-    Paste the content nad save
+    Paste the content and save
     ```yaml
     apiVersion: apps/v1
     kind: DaemonSet
@@ -213,7 +213,7 @@ status: "Draft"
    ```bash
    kubectl apply -f ds-test.yaml
    ```
-3. List daemonset
+3. List daemonSet
    ```bash
    kubectl get ds -n test
    ```
@@ -221,7 +221,7 @@ status: "Draft"
     ```bash
     kubectl -n test describe ds test
     ```
-5. List pods in `test` namespace
+5. List pods in the `test` namespace
    ```bash
    kubectl get po -n test -o wide
    ```
@@ -236,7 +236,7 @@ status: "Draft"
     ```
    </details></p>
 
-6. Check labels of pods
+6. Check the labels of pods
    ```bash
    kubectl -n test get po --show-labels
    ```
@@ -252,32 +252,32 @@ status: "Draft"
     kubectl -n test get po --show-labels -w
     ```
     Outcome:
-    A new pod should not be created. Deamon set allows creating no more than 1 pod per node. The existance of the second one on a node is forbidden.
-9. Describe daemonset 
+    A new pod should not be created. Deamon set allows creating no more than 1 pod per node. The existence of the second one on a node is forbidden.
+9. Describe daemonSet 
     ```bash
     kubectl -n test describe ds test
     ```
-10. Delete daemonset without removing pods
+10. Delete daemonSet without removing pods
     ```bash
     kubectl -n test delete ds test --cascade=orphan
     kubectl -n test get po
     kubectl -n test get ds
     ```
-11. Recreate daemonset
+11. Recreate daemonSet
     ```bash
     kubectl -n test apply -f ds-test.yaml
     ```
-12. Delete daemonset with pods
+12. Delete daemonSet with pods
     ```bash
     kubectl -n test delete ds test
     kubectl -n test get po 
     kubectl -n test get ds
     ```
-13. Create new daemonset `test-nodeselector`
+13. Create a new daemonSet `test-nodeselector`
     ```bash
     vim ds-nodeselector.yaml
     ```
-    paste yaml to the file
+    Paste the yaml manifest to the file
     ```yaml
     apiVersion: apps/v1
     kind: DaemonSet
@@ -325,7 +325,7 @@ status: "Draft"
     ```bash
     kubectl apply -f ds-nodeselector.yaml
     ```
-15. Get ds `test-nodeselector` and check number of pods
+15. Get daemonSet `test-nodeselector` and check the number of pods
     ```bash
     kubectl -n test get ds test-nodeselector
     ```
@@ -345,7 +345,7 @@ status: "Draft"
    kubectl -n test get deployment.apps
    kubectl -n test get pod --show-labels
    ```
-   alternative way is to use yaml file
+   Alternative way is to use the yaml file
    ```yaml
    apiVersion: apps/v1
    kind: Deployment
@@ -370,7 +370,7 @@ status: "Draft"
            ports:
            - containerPort: 80
    ```
-2. Get history of rollouts
+2. Get the history of rollouts
    ```bash
    kubectl -n test rollout history deployment test-deployment
    ```
@@ -433,12 +433,12 @@ status: "Draft"
    kubectl -n test scale deployment test-deployment --replicas 3
    kubectl -n test annotate deployment/test-deployment kubernetes.io/change-cause="replicas 3"
    ```
-8. Check resplicaSet and pods
+8. Check the resplicaSet and pods
    ```bash
    kubectl -n test get rs
    kubectl -n test get po --show-labels
    ```
-9. Check description of deployment
+9. Check the description of deployment
    ```bash
    kubectl -n test describe deployment test-deployment
    ```
@@ -449,7 +449,7 @@ status: "Draft"
     kubectl -n test rollout status deployment/test-deployment
     kubectl -n test rollout history deployment/test-deployment
     ```
-11. Pause rollout to avoid immedaite change of the rollout
+11. Pause rollout to avoid immediate change of the rollout
     ```bash
     kubectl -n test rollout pause deployment/test-deployment
     kubectl -n test scale deployment/test-deployment --replicas 10
@@ -469,10 +469,10 @@ status: "Draft"
     kubectl -n test get events
     ```
     Output:
-    List of events is displayed.
+    A list of events is displayed.
 
 ## 3.1. Deployment strategies
-1. Create yaml descriptor of `test-deployment` to file `recreate-deployment.yaml`
+1. Create a yaml descriptor of `test-deployment` to file `recreate-deployment.yaml`
    ```bash
    kubectl -n test get deployment test-deployment -o yaml > recreate-deployment.yaml
    ```
@@ -480,7 +480,7 @@ status: "Draft"
    ```bash
    vim recreate-deployment.yaml
    ```
-3. Change in the descriptor name of the deployment into `recreate-deployment` and change `spec.strategy.type` into `Recreate`
+3. Change the descriptor name of the deployment into `recreate-deployment` and change `spec.strategy.type` into `Recreate`
    ```yaml
    metadata:
      name: recreate-deployment
@@ -510,13 +510,13 @@ status: "Draft"
    ```
    Output
    All pods should be removed at the same time and recreated after all pods are terminated.
-### 3.1.1. Check ReplicaSet
-1. List all replicaset and find the one that are a subset of deployment.
+### 3.1.1. Check replicaSet
+1. List all the replicaSets and find the ones that are a subset of deployment.
    ```bash
    kubectl -n test get rs
    ```
    Output:
-   There should be ReplicaSets which are named as deployments.
+   There should be replicaSets which are named as deployments.
 2. Remove deployment
    ```bash
    kubectl -n test delete deployment recreate-deployment
@@ -525,16 +525,16 @@ status: "Draft"
    ```bash
    kubectl -n test get pod -w
    ```
-4. When all pods are deleted check if replicaset still exists
+4. When all pods are deleted check if replicaSet still exists
    ```bash
    kubectl -n test get rs
    ```
 # 4. Cleanup
-1. Remove any deployments and replicasets created in this module.
+1. Remove any deployments and replicaSets created in this module.
    ```bash
    kubectl -n test get all
    ```
-   Output should list all resources in teh namespace `test`
+   The output should list all resources in the namespace `test``
    ```bash
    kubectl -n test delete rs <rs_name1> <rs_name2>
    kubectl -n test delete deployment <depl_name1> <depl_name2>
